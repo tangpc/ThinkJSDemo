@@ -1,15 +1,20 @@
 {
-  "apps": [{
-    "name": "ThinkJSDemo",
-    "script": "production.js",
-    "cwd": "D:\\Git\\ThinkJSDemo",
-    "exec_mode": "fork",
-    "max_memory_restart": "1G",
-    "autorestart": true,
-    "node_args": [],
-    "args": [],
-    "env": {
-      
+  "apps": [
+    {
+      "name": "ThinkJSDemo",
+      "script": "development.js", // 使用PM2 查看日志输出信息需要使用 development.js(开发模式)，如不需要使用 production.js(生产模式)
+      "cwd": "D:\\Git\\ThinkJSDemo",
+      "out_file": "./logs/_out.log",
+      "error_file": "./logs/_error.log",
+      "exec_mode": "fork",
+      "max_memory_restart": "1G",
+      "autorestart": true,
+      "node_args": [],
+      "args": [],
+      "env": {},
+      "watch": [ // 监控变化的目录，一旦变化，自动重启
+        "src"
+      ]
     }
-  }]
+  ]
 }
