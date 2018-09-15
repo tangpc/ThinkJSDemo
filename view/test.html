@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <input id="name" type="text">
+    <button onclick="OnClick()" type="button">点击</button>
+
+    <img id="imgUrl" src="<$ imgUrl $>" width="300" height="200">
+
+    <div>
+        <h2>歌词</h2>
+        <p id="lyricCtn">
+            <$ lyricCtn $>
+        </p>
+    </div>
+
+    <br />
+
+    <div id="commentList">
+        <h2>评论</h2>
+        <% for item in commentList %>
+        <p>
+            <$ item $>
+        </p>
+        <% endfor %>
+    </div>
+
+    <iframe name="contentFrame" id="g_iframe" class="g-iframe" scrolling="auto" frameborder="0" src="/static/test.html"
+        allowfullscreen="true">
+    </iframe>
+
+</body>
+
+</html>
+
+<script src="/socket.io/socket.io.js"></script>
+<!-- <script src="http://lib.baomitu.com/socket.io/2.0.1/socket.io.js"></script> -->
+<script type="text/javascript">
+
+    var socket = io('http://127.0.0.1:8360');
+
+    function OnClick() {
+        var username = document.getElementById('name').value;
+        // alert(username)
+        if (username) {
+            socket.emit('music', username);
+            // alert('music' + username)
+        }
+    }
+
+    socket.on('imgUrl', function (data) {
+        console.log('imgUrl：', data);
+        // alert('imgUrl：' + data)
+        document.getElementById('imgUrl').src = data;
+    });
+
+    socket.on('lyricCtn', function (data) {
+        console.log('lyricCtn：', data);
+        // alert('lyricCtn：' + data)
+        document.getElementById('lyricCtn').innerText = data;
+    });
+
+    socket.on('commentList', function (data) {
+        console.log('commentList：', data);
+        let str = `<h2>评论</h2>`
+        for (let i = 0; i < data.length; i++) {
+            str += `<p>${data[i]}<p>`;
+        }
+        // alert('commentList：' + str)
+        document.getElementById('commentList').innerHTML = str;
+    })
+
+
+    socket.on('opend', function (data) {
+        console.log('opend：', data);
+        // alert('opend：' + data)
+    });
+
+    socket.on('joined', function (data) {
+        console.log('joined：', data);
+        // alert('joined：' + data)
+    });
+</script>
