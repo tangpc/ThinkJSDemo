@@ -2,9 +2,30 @@ const fileCache = require('think-cache-file');
 const nunjucks = require('think-view-nunjucks');
 const fileSession = require('think-session-file');
 const mysql = require('think-model-mysql');
-const {Console, File, DateFile} = require('think-logger3');
+const { Console, File, DateFile } = require('think-logger3');
 const path = require('path');
+const socketio = require('think-websocket-socket.io');
 const isDev = think.env === 'development';
+
+
+exports.websocket = {
+  type: 'socketio',
+  common: {
+    // common config
+  },
+  socketio: {
+    handle: socketio,
+    allowOrigin: '127.0.0.1:8360',  // 默认所有的域名都允许访问
+    path: '/socket.io',             // 默认 '/socket.io'
+    adapter: null,                  // 默认无 adapter
+    messages: [{
+      open: '/websocket/open',       // 建立连接时处理对应到 websocket Controller 下的 open Action
+      close: '/websocket/close',     // 关闭连接时处理的 Action
+      addUser: '/websocket/addUser', // addUser 事件处理的 Action
+      music: '/websocket/getPaMusic', // music 事件处理的 Action
+    }]
+  }
+}
 
 /**
  * cache adapter config
