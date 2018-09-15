@@ -94,12 +94,22 @@ exports.session = {
 exports.view = {
   type: 'nunjucks',
   common: {
-    viewPath: path.join(think.ROOT_PATH, 'view'),
-    sep: '_',
-    extname: '.html'
+    viewPath: path.join(think.ROOT_PATH, 'view'), //模板文件的根目录
+    sep: '_', //Controller 与 Action 之间的连接符
+    extname: '.html' //文件扩展名
   },
   nunjucks: {
-    handle: nunjucks
+    handle: nunjucks,
+    options: {
+      tags: { // 修改定界符相关的参数
+        blockStart: '<%',
+        blockEnd: '%>',
+        variableStart: '<$',
+        variableEnd: '$>',
+        commentStart: '<#',
+        commentEnd: '#>'
+      }
+    }
   }
 };
 
