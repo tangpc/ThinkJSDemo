@@ -13,6 +13,10 @@ module.exports = class extends Base {
     this.broadcast('joined', 'There is a new client joined successfully!')//广播
   }
 
+  closeAction() {
+    console.log('websocket链接关闭')
+  }
+
   addUserAction() {
     console.log('获取客户端 addUser 事件发送的数据', this.wsData);
     console.log('获取当前 WebSocket 对象', this.websocket);
@@ -78,24 +82,6 @@ module.exports = class extends Base {
       // 进入歌曲页面
       await page.goto(selectedSongHref.childNodes[0].info[0].href, { waitUntil: 'networkidle2' });
 
-
-      /* {
-        // 获取歌曲 鬼才会想起 的地址
-        const selectedSongHref = await iframe.evaluate(e => {
-          const songList = Array.from(e.childNodes);
-          const idx = songList.findIndex(v => v.childNodes[1].innerText.replace(/\s/g, '') === '鬼才会想起');
-          return songList[idx].childNodes[1].firstChild.firstChild.firstChild.href;
-        }, SONG_LS_SELECTOR);
-
-        console.log(selectedSongHref); // https://music.163.com/song?id=524128365
-
-        // 进入歌曲页面
-        await page.goto(selectedSongHref, { waitUntil: 'networkidle2' });
-      } */
-
-
-      // 获取歌曲页面嵌套的 iframe
-      await page.waitFor(2000);
       iframe = await page.frames().find(f => f.name() === 'contentFrame');
 
       // 截图
